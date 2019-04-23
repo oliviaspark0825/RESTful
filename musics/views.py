@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import MusicSerializer, ArtistSerializer, ArtistDetailSerializer, CommentSerializer, MusicDetailSerializer
 
-from .models import Music, Artist
+from .models import Music, Artist, Comment
 # Create your views here.
 
 
@@ -46,4 +46,16 @@ def comment_create(request, music_pk): # 몇번 음악에 달리는 댓글인지
         serializer.save(music_id=music_pk)
         return Response(serializer.data)
         
+@api_view(['PUT', 'DELETE'])
+def comment_update_and_delete(request, comment_pk, music_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    if request.method == 'PUT':
+        serializer = CommentSerializer(data=request.data, instance=comment)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'message':'Comment has been updated!!'})
+    else:
+        comment.delete()
+        return Response({'message':'Comment has been deleted!'})
         
+    
