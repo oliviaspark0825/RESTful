@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import MusicSerializer, ArtistSerializer, ArtistDetailSerializer, CommentSerializer
+from .serializers import MusicSerializer, ArtistSerializer, ArtistDetailSerializer, CommentSerializer, MusicDetailSerializer
 
 from .models import Music, Artist
 # Create your views here.
@@ -23,7 +23,7 @@ def music_list(request):
 @api_view(['GET'])
 def music_detail(request, music_pk):
     music = get_object_or_404(Music, pk=music_pk)
-    serializer = MusicSerializer(music)
+    serializer = MusicDetailSerializer(music)
     return Response(serializer.data)
 
 @api_view(['GET'])
